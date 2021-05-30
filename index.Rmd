@@ -1,0 +1,88 @@
+---
+output: 
+  html_document: 
+    highlight: textmate
+    theme: journal
+---
+<h2 style="text-align:center;font-family:Topedia Sans TW Beta;">臺灣COVID-19本土確定病例面量圖</h2>
+<h4 style="text-align:center;font-family:Topedia Sans TW Beta;">更新時間：`r format(Sys.time(), "%Y/%m/%d %H:%M")` </h4>
+
+
+```{r echo=F,results ='hide',message =FALSE,warning=FALSE}
+library(sf);library(tmap);library(leaflet);library(dplyr);library(RColorBrewer)
+```
+
+<h5 style="text-align:center;font-family:Topedia Sans TW Beta;">14天內新增病例統計數</h5>
+<h5 style="text-align:center;font-family:Topedia Sans TW Beta;">`r format(Sys.Date()-15, "%Y/%m/%d")`~`r format(Sys.Date()-1, "%Y/%m/%d")` </h5>
+```{r echo=F,warning=F}
+#地區年齡性別統計表-嚴重特殊傳染性肺炎-依個案研判日統計
+#https://data.cdc.gov.tw/dataset/agsdctable-day-19cov
+url="https://od.cdc.gov.tw/eic/Day_Confirmation_Age_County_Gender_19CoV.csv"
+datao=read.csv(url,fileEncoding = "utf8")
+
+data=datao[datao$個案研判日>=as.numeric(format(Sys.Date()-15, "%Y%m%d")),]
+data$NAME=paste0(data$縣市,data$鄉鎮)
+df=xtabs(確定病例數~NAME,data)
+dg=xtabs(確定病例數~縣市,data)
+
+load("TW.Rdata")
+TW$cases=0
+for (i in 1:length(df)) TW$cases[TW$NAME==names(df)[i]]=df[i]
+TWC$cases=0
+for (i in 1:length(dg)) TWC$cases[TWC$COUNTY==names(dg)[i]]=dg[i]
+
+leaflet(height="600", width="100%") %>%  
+  addTiles('http://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png') %>% 
+  setView(121.4,24.8,9)%>%
+  addPolygons(data=TWC,color="black",weight=3,opacity=1,fill=F)%>%
+  addPolygons(data=TW,
+              fillColor=~brewer.pal(5,"YlOrRd")[(rank(cases)-1)%/%74+1],
+              color ="black",weight = 1,opacity = 1, fillOpacity = 0.5,dashArray = "2",
+              popup =~sprintf('縣市：<B>%s</B><br>鄉鎮市區：<B>%s</B><br>確診人數：<B>%d</B>',COUNTY,TOWN,cases),
+              label =~cases, labelOptions = labelOptions(noHide = T, textOnly = TRUE, textsize = "8px"),
+              highlightOptions = highlightOptions(color = "#03F", weight = 3,fillOpacity = 0.8,bringToFront = TRUE),
+              group = "鄉鎮市區")%>%
+  addPolygons(data=TWC,
+              fillColor=~brewer.pal(5,"YlOrRd")[ceiling(rank(cases)/9*2)],
+              color="black",weight=3,opacity=1, fillOpacity = 0.5,
+              popup =~sprintf('縣市：<B>%s</B><br>確診人數：<B>%d</B>',COUNTY,cases),
+              label =~cases, labelOptions = labelOptions(noHide = T, textOnly = TRUE, textsize = "12px"),
+              highlightOptions = highlightOptions(color = "red", weight = 5,fillOpacity = 0.8,bringToFront = TRUE),
+              group = "縣市")%>%
+  addLayersControl(baseGroups = c("鄉鎮市區","縣市"),options = layersControlOptions(collapsed = FALSE))
+```
+
+<h5 style="text-align:center;font-family:Topedia Sans TW Beta;">2021年5月以來新增病例統計數</h5>
+<h5 style="text-align:center;font-family:Topedia Sans TW Beta;">2021/05/01~`r format(Sys.Date()-1, "%Y/%m/%d")` </h5>
+```{r echo=F,warning=F}
+data=datao[datao$個案研判日>20210501,]
+data$NAME=paste0(data$縣市,data$鄉鎮)
+df=xtabs(確定病例數~NAME,data)
+dg=xtabs(確定病例數~縣市,data)
+
+load("TW.Rdata")
+TW$cases=0
+for (i in 1:length(df)) TW$cases[TW$NAME==names(df)[i]]=df[i]
+TWC$cases=0
+for (i in 1:length(dg)) TWC$cases[TWC$COUNTY==names(dg)[i]]=dg[i]
+
+leaflet(height="600", width="100%") %>%  
+  addTiles('http://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png') %>% 
+  setView(121.4,24.8,9)%>%
+  addPolygons(data=TWC,color="black",weight=3,opacity=1,fill=F)%>%
+  addPolygons(data=TW,
+              fillColor=~brewer.pal(5,"YlOrRd")[(rank(cases)-1)%/%74+1],
+              color ="black",weight = 1,opacity = 1, fillOpacity = 0.5,dashArray = "2",
+              popup =~sprintf('縣市：<B>%s</B><br>鄉鎮市區：<B>%s</B><br>確診人數：<B>%d</B>',COUNTY,TOWN,cases),
+              label =~cases, labelOptions = labelOptions(noHide = T, textOnly = TRUE, textsize = "8px"),
+              highlightOptions = highlightOptions(color = "#03F", weight = 3,fillOpacity = 0.8,bringToFront = TRUE),
+              group = "鄉鎮市區")%>%
+  addPolygons(data=TWC,
+              fillColor=~brewer.pal(5,"YlOrRd")[ceiling(rank(cases)/9*2)],
+              color="black",weight=3,opacity=1, fillOpacity = 0.5,
+              popup =~sprintf('縣市：<B>%s</B><br>確診人數：<B>%d</B>',COUNTY,cases),
+              label =~cases, labelOptions = labelOptions(noHide = T, textOnly = TRUE, textsize = "12px"),
+              highlightOptions = highlightOptions(color = "red", weight = 5,fillOpacity = 0.8,bringToFront = TRUE),
+              group = "縣市")%>%
+  addLayersControl(baseGroups = c("鄉鎮市區","縣市"),options = layersControlOptions(collapsed = FALSE))
+```
