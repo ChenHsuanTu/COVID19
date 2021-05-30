@@ -5,7 +5,7 @@ output:
     theme: journal
 ---
 <h2 style="text-align:center;font-family:Topedia Sans TW Beta;">臺灣COVID-19本土確定病例面量圖</h2>
-<h4 style="text-align:center;font-family:Topedia Sans TW Beta;">更新時間：`r format(Sys.time(), "%Y/%m/%d %H:%M")` </h4>
+<h6 style="text-align:center;font-family:Topedia Sans TW Beta;">更新時間：`r format(Sys.time(), "%Y/%m/%d %H:%M")` </h6>
 
 
 ```{r echo=F,results ='hide',message =FALSE,warning=FALSE}
@@ -13,7 +13,7 @@ library(sf);library(tmap);library(leaflet);library(dplyr);library(RColorBrewer);
 ```
 
 <h5 style="text-align:center;font-family:Topedia Sans TW Beta;">14天內新增病例統計數</h5>
-<h5 style="text-align:center;font-family:Topedia Sans TW Beta;">`r format(Sys.Date()-15, "%Y/%m/%d")`~`r format(Sys.Date()-1, "%Y/%m/%d")` </h5>
+<h6 style="text-align:center;font-family:Topedia Sans TW Beta;">`r format(Sys.Date()-15, "%Y/%m/%d")`~`r format(Sys.Date()-1, "%Y/%m/%d")` </h6>
 ```{r echo=F,warning=F}
 
 
@@ -68,7 +68,7 @@ leaflet(height="600", width="100%") %>%
 ```
 
 <h5 style="text-align:center;font-family:Topedia Sans TW Beta;">2021年5月以來新增病例統計數</h5>
-<h5 style="text-align:center;font-family:Topedia Sans TW Beta;">2021/05/01~`r format(Sys.Date()-1, "%Y/%m/%d")` </h5>
+<h6 style="text-align:center;font-family:Topedia Sans TW Beta;">2021/05/01~`r format(Sys.Date()-1, "%Y/%m/%d")` </h6    >
 ```{r echo=F,warning=F}
 data=datao[datao$個案研判日>20210501,]
 data$NAME=paste0(data$縣市,data$鄉鎮)
@@ -114,3 +114,5 @@ leaflet(height="600", width="100%") %>%
   )%>%
   addLayersControl(baseGroups = c("鄉鎮市區","縣市"),options = layersControlOptions(collapsed = FALSE))
 ```
+<h6 style="text-align:center;font-family:Topedia Sans TW Beta;">資料來源：疾病管制署資料開放平台</h6>
+<h6 style="text-align:center;font-family:Topedia Sans TW Beta;">[地區年齡性別統計表-嚴重特殊傳染性肺炎-依個案研判日統計](https://data.cdc.gov.tw/dataset/agsdctable-day-19cov)</h6>
