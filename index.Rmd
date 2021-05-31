@@ -126,7 +126,7 @@ leaflet(height="600", width="100%") %>%
     color ="black",weight = 1,opacity = 1, fillOpacity = 0.5,dashArray = "2",
     popup =~sprintf('縣市：<B>%s</B><br>鄉鎮市區：<B>%s</B><br>確診人數：<B>%d</B>',COUNTY,TOWN,cases),
     highlightOptions = highlightOptions(color = "#03F", weight = 3,fillOpacity = 0.8,bringToFront = TRUE),
-    group = "鄉鎮市區"
+    group = "鄉鎮市區無標籤"
   )%>%
   addLayersControl(baseGroups = c("鄉鎮市區","鄉鎮市區無標籤","縣市"),options = layersControlOptions(collapsed = FALSE))
 ```
