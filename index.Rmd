@@ -64,7 +64,15 @@ leaflet(height="600", width="100%") %>%
     highlightOptions = highlightOptions(color = "red", weight = 5,fillOpacity = 0.8,bringToFront = TRUE),
     group = "縣市"
   )%>%
-  addLayersControl(baseGroups = c("鄉鎮市區","縣市"),options = layersControlOptions(collapsed = FALSE))
+  addPolygons(
+    data=TW,
+    fillColor=~brewer.pal(9,"YlOrRd")[(rank(cases)-1)%/%41+1],
+    color ="black",weight = 1,opacity = 1, fillOpacity = 0.5,dashArray = "2",
+    popup =~sprintf('縣市：<B>%s</B><br>鄉鎮市區：<B>%s</B><br>確診人數：<B>%d</B>',COUNTY,TOWN,cases),
+    highlightOptions = highlightOptions(color = "#03F", weight = 3,fillOpacity = 0.8,bringToFront = TRUE),
+    group = "鄉鎮市區無標籤"
+  )%>%
+  addLayersControl(baseGroups = c("鄉鎮市區","鄉鎮市區無標籤","縣市"),options = layersControlOptions(collapsed = FALSE))
 ```
 
 <h5 style="text-align:center;font-family:Topedia Sans TW Beta;">2021年5月以來新增病例統計數</h5>
@@ -112,7 +120,15 @@ leaflet(height="600", width="100%") %>%
     highlightOptions = highlightOptions(color = "red", weight = 5,fillOpacity = 0.8,bringToFront = TRUE),
     group = "縣市"
   )%>%
-  addLayersControl(baseGroups = c("鄉鎮市區","縣市"),options = layersControlOptions(collapsed = FALSE))
+  addPolygons(
+    data=TW,
+    fillColor=~brewer.pal(9,"YlOrRd")[(rank(cases)-1)%/%41+1],
+    color ="black",weight = 1,opacity = 1, fillOpacity = 0.5,dashArray = "2",
+    popup =~sprintf('縣市：<B>%s</B><br>鄉鎮市區：<B>%s</B><br>確診人數：<B>%d</B>',COUNTY,TOWN,cases),
+    highlightOptions = highlightOptions(color = "#03F", weight = 3,fillOpacity = 0.8,bringToFront = TRUE),
+    group = "鄉鎮市區"
+  )%>%
+  addLayersControl(baseGroups = c("鄉鎮市區","鄉鎮市區無標籤","縣市"),options = layersControlOptions(collapsed = FALSE))
 ```
 <h6 style="text-align:center;font-family:Topedia Sans TW Beta;">資料來源：疾病管制署資料開放平台</h6>
 <h6 style="text-align:center;font-family:Topedia Sans TW Beta;">[地區年齡性別統計表-嚴重特殊傳染性肺炎-依個案研判日統計](https://data.cdc.gov.tw/dataset/agsdctable-day-19cov)</h6>
