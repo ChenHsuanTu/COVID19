@@ -7,10 +7,14 @@ output:
 <h2 style="text-align:center;font-family:Topedia Sans TW Beta;">臺灣COVID-19本土確定病例面量圖</h2>
 <h6 style="text-align:center;font-family:Topedia Sans TW Beta;">更新時間：`r format(Sys.time(), "%Y/%m/%d %H:%M")` </h6>
 
+<h4 style="text-align:center;font-family:Topedia Sans TW Beta;">此網頁已停止更新，請到以下互動式地圖網站（自動更新）。</h6>
+<h2 style="text-align:center;font-family:Topedia Sans TW Beta;">[臺灣COVID-19本土確定病例面量圖](https://angustu.shinyapps.io/TW_COVID)</h6>
 
 ```{r echo=F,results ='hide',message =FALSE,warning=FALSE}
 library(sf);library(tmap);library(leaflet);library(dplyr);library(RColorBrewer);library(htmltools)
 ```
+
+*** 
 
 <h5 style="text-align:center;font-family:Topedia Sans TW Beta;">14天內新增病例統計數</h5>
 <h6 style="text-align:center;font-family:Topedia Sans TW Beta;">`r format(Sys.Date()-15, "%Y/%m/%d")`~`r format(Sys.Date()-1, "%Y/%m/%d")` </h6>
